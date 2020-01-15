@@ -24,3 +24,4 @@ RUN Rscript -e 'install.packages("optparse", repos="https://cran.rstudio.com")'
 RUN Rscript -e 'install.packages("DT", repos="https://cran.rstudio.com")'
 RUN Rscript -e 'install.packages("ggrepel", repos="https://cran.rstudio.com")'
 RUN Rscript -e 'install.packages("ggplot2", repos="https://cran.rstudio.com")'
+RUN mkdir /data && cd /data && git clone https://github.com/davidaknowles/leafcutter
