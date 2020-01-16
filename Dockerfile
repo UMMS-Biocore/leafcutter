@@ -67,6 +67,7 @@ ENV PATH=${PATH}:/usr/src/regtools/build
 #######################
 ## leafcutter 0.2.8  ##
 #######################
+RUN Rscript -e 'install.packages("rstan", repos="https://cran.rstudio.com")'
 RUN Rscript -e 'devtools::install_github("davidaknowles/leafcutter/leafcutter")'
 RUN Rscript -e 'install.packages("ggplot2", repos="https://cran.rstudio.com")'
 RUN cd /usr/src && git clone https://github.com/davidaknowles/leafcutter
