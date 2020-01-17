@@ -1,4 +1,4 @@
-FROM r-base:3.5.1
+FROM r-base:3.5.2
 
 LABEL maintainer="Onur Yukselen <onur.yukselen@umassmed.edu>" description="Docker image containing all requirements for the dolphinnext/leafcutter pipeline"
 
