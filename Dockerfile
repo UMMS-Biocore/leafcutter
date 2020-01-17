@@ -1,9 +1,30 @@
-FROM r-base:3.5.2
+################## BASE IMAGE ######################
 
-LABEL maintainer="Onur Yukselen <onur.yukselen@umassmed.edu>" description="Docker image containing all requirements for the dolphinnext/leafcutter pipeline"
+FROM brianyee/r-jupyter
+
+################## METADATA ######################
+
+LABEL base_image="continuumio/miniconda:latest"
+LABEL version="1"
+LABEL software="R"
+LABEL software.version="3.5.1"
+LABEL about.summary="R-leafcutter + jupyter irkernel"
+LABEL about.home="https://github.com/byee4/docker"
+
+################## MAINTAINER ######################
+MAINTAINER Onur Yukselen <onur.yukselen@umassmed.edu>
+
+RUN Rscript -e 'install.packages("StanHeaders", repos="https://cran.rstudio.com")'
+RUN Rscript -e 'install.packages("rstan", repos="https://cran.rstudio.com")'
+RUN Rscript -e 'install.packages("dplyr", repos="https://cran.rstudio.com")'
+RUN Rscript -e 'install.packages("rstantools", repos="https://cran.rstudio.com")'
+RUN Rscript -e 'devtools::install_github("davidaknowles/leafcutter/leafcutter")'
+RUN Rscript -e 'IRkernel::installspec(name = "R-leafcutter", displayname = "R-leafcutter", user = FALSE)'
+RUN Rscript -e 'install.packages("ggplot2", repos="https://cran.rstudio.com")'
+RUN cd /usr/src && git clone https://github.com/davidaknowles/leafcutter
+ENV PATH=${PATH}:/usr/src/leafcutter/scripts:/usr/src/leafcutter/clustering
 
 RUN export LC_ALL=C
-RUN apt-get update 
 RUN apt-get install -y --no-install-recommends \
                 ghostscript \
                 lmodern \
@@ -31,22 +52,8 @@ RUN apt-get install -y --no-install-recommends \
 		libffi-dev  \
         && install.r binb linl pinp tint 
 
-RUN pip install -U "setuptools==3.4.1"
-RUN pip install -U "pip==1.5.4"
-RUN pip install -U "virtualenv==1.11.4"
 
 RUN R --slave -e "install.packages(c('devtools', 'gplots', 'R.utils','rmarkdown', 'RColorBrewer', 'Cairo'), dependencies = TRUE, repos='https://cloud.r-project.org')"
-
-RUN apt-get clean all
-RUN apt-get -y install zip unzip gcc g++ make zlib1g-dev zlibc libbz2-dev liblzma-dev \
-    ca-certificates \
-    libpq-dev \
-    python-pip \
-    python2.7 \
-    python2.7-dev \
-    && apt-get autoremove -y \
-    && apt-get clean -y
-
 
 ## Samtools
 
@@ -63,18 +70,5 @@ ENV PATH=${PATH}:/usr/src/samtools-1.3
 RUN apt-get install -y cmake
 RUN cd /usr/src && git clone https://github.com/griffithlab/regtools && cd regtools/ && mkdir build && cd build/ && cmake .. && make
 ENV PATH=${PATH}:/usr/src/regtools/build
-
-#######################
-## leafcutter 0.2.8  ##
-#######################
-RUN Rscript -e 'install.packages("StanHeaders", repos="https://cran.rstudio.com")'
-RUN Rscript -e 'install.packages("dplyr", repos="https://cran.rstudio.com")'
-RUN Rscript -e 'install.packages("rstantools", repos="https://cran.rstudio.com")'
-RUN Rscript -e 'install.packages("rstan", repos="https://cran.rstudio.com")'
-RUN Rscript -e 'devtools::install_github("davidaknowles/leafcutter/leafcutter")'
-RUN Rscript -e 'install.packages("ggplot2", repos="https://cran.rstudio.com")'
-RUN cd /usr/src && git clone https://github.com/davidaknowles/leafcutter
-ENV PATH=${PATH}:/usr/src/leafcutter/scripts:/usr/src/leafcutter/clustering
-
 
 RUN mkdir -p /project /nl /mnt /share
