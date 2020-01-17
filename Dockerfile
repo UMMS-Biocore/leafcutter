@@ -29,19 +29,12 @@ RUN export LC_ALL=C
 RUN R --slave -e "install.packages(c('devtools', 'gplots', 'R.utils','rmarkdown', 'RColorBrewer', 'Cairo'), dependencies = TRUE, repos='https://cloud.r-project.org')"
 
 ## Samtools
-RUN apt-get install libncurses5 libncurses5-dev
-RUN cd /usr/src && wget https://github.com/samtools/samtools/releases/download/1.3/samtools-1.3.tar.bz2 && \
-	tar jxf samtools-1.3.tar.bz2 && \
-	rm samtools-1.3.tar.bz2 && \
-	cd samtools-1.3 && \
-	./configure --prefix $(pwd) && \
-	make
-
-ENV PATH=${PATH}:/usr/src/samtools-1.3
-
+RUN conda install -c bioconda "samtools==1.3"
 ## Regtools ###
-RUN apt-get install -y cmake
-RUN cd /usr/src && git clone https://github.com/griffithlab/regtools && cd regtools/ && mkdir build && cd build/ && cmake .. && make
-ENV PATH=${PATH}:/usr/src/regtools/build
+RUN conda install -c bioconda "regtools==0.5.2"
+RUN apt-get update
+RUN apt-get install -y cmake zlib1g-dev
+# RUN cd /usr/src && git clone https://github.com/griffithlab/regtools && cd regtools/ && mkdir build && cd build/ && cmake .. && make
+# ENV PATH=${PATH}:/usr/src/regtools/build
 
 RUN mkdir -p /project /nl /mnt /share
