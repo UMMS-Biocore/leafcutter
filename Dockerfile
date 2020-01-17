@@ -29,7 +29,7 @@ RUN export LC_ALL=C
 RUN R --slave -e "install.packages(c('devtools', 'gplots', 'R.utils','rmarkdown', 'RColorBrewer', 'Cairo'), dependencies = TRUE, repos='https://cloud.r-project.org')"
 
 ## Samtools
-
+RUN apt-get install libncurses5 libncurses5-dev
 RUN cd /usr/src && wget https://github.com/samtools/samtools/releases/download/1.3/samtools-1.3.tar.bz2 && \
 	tar jxf samtools-1.3.tar.bz2 && \
 	rm samtools-1.3.tar.bz2 && \
