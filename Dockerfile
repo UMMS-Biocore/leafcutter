@@ -25,33 +25,6 @@ RUN cd /usr/src && git clone https://github.com/davidaknowles/leafcutter
 ENV PATH=${PATH}:/usr/src/leafcutter/scripts:/usr/src/leafcutter/clustering
 
 RUN export LC_ALL=C
-RUN apt-get install -y --no-install-recommends \
-                ghostscript \
-                lmodern \
-                pandoc-citeproc \
-                qpdf \
-                pandoc \
-                r-cran-formatr \
-                r-cran-ggplot2 \
-                r-cran-knitr \
-		r-cran-rmarkdown \
-                r-cran-runit \
-                r-cran-testthat \
-                texinfo \
-                texlive-fonts-extra \
-                texlive-fonts-recommended \
-                texlive-latex-extra \
-                texlive-latex-recommended \
-                texlive-luatex \
-                texlive-plain-generic \
-                texlive-science \
-                texlive-xetex \
-		unzip libsqlite3-dev libbz2-dev libssl-dev python python-dev \
-                python-pip git libxml2-dev software-properties-common wget tree vim sed \
-                subversion g++ gcc gfortran libcurl4-openssl-dev curl zlib1g-dev build-essential \
-		libffi-dev  \
-        && install.r binb linl pinp tint 
-
 
 RUN R --slave -e "install.packages(c('devtools', 'gplots', 'R.utils','rmarkdown', 'RColorBrewer', 'Cairo'), dependencies = TRUE, repos='https://cloud.r-project.org')"
 
