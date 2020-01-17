@@ -1,4 +1,4 @@
-FROM r-base:3.5.2
+FROM r-base:3.5.1
 
 LABEL maintainer="Onur Yukselen <onur.yukselen@umassmed.edu>" description="Docker image containing all requirements for the dolphinnext/leafcutter pipeline"
 
@@ -67,6 +67,9 @@ ENV PATH=${PATH}:/usr/src/regtools/build
 #######################
 ## leafcutter 0.2.8  ##
 #######################
+RUN Rscript -e 'install.packages("StanHeaders", repos="https://cran.rstudio.com")'
+RUN Rscript -e 'install.packages("dplyr", repos="https://cran.rstudio.com")'
+RUN Rscript -e 'install.packages("rstantools", repos="https://cran.rstudio.com")'
 RUN Rscript -e 'install.packages("rstan", repos="https://cran.rstudio.com")'
 RUN Rscript -e 'devtools::install_github("davidaknowles/leafcutter/leafcutter")'
 RUN Rscript -e 'install.packages("ggplot2", repos="https://cran.rstudio.com")'
